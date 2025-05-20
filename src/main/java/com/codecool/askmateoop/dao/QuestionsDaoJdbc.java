@@ -12,6 +12,11 @@ import java.util.List;
 
 @Repository
 public class QuestionsDaoJdbc implements QuestionsDAO {
+    private final DataSource dataSource;
+
+    public QuestionsDaoJdbc(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<Question> getAllQuestions() {
