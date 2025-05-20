@@ -1,4 +1,4 @@
-package com.codecool.askmateoop.controller.dto;
+package com.codecool.askmateoop.controller.dto.question;
 
 import java.time.LocalDateTime;
 
