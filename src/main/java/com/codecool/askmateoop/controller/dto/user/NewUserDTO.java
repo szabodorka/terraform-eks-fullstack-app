@@ -1,4 +1,4 @@
 package com.codecool.askmateoop.controller.dto.user;
 
-public class NewUserDTO {
+public record NewUserDTO(String username, String password) {
 }
