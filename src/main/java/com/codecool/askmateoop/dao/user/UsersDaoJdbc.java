@@ -10,4 +10,19 @@ public class UsersDaoJdbc implements UsersDAO {
     // TODO SQL query users from database
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  public void saveUser(User user) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void deleteUserById(int id) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public User getUserById(int id) {
+    throw new UnsupportedOperationException();
+  }
 }
