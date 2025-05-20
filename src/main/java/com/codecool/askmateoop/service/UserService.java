@@ -19,8 +19,7 @@ public class UserService {
 
   public List<UserDTO> getAllUsers() {
     List<User> allUsers = usersDAO.getAllUsers();
-    // TODO convert data to UserDTO
-    return List.of(new UserDTO(1, "Example Title", "Example Description", LocalDateTime.now()));
+    return allUsers.stream().map(UserDTO::fromUser).toList();
   }
 
   public UserDTO getUserById(int id) {
