@@ -39,7 +39,7 @@ public class UsersDaoJdbc implements UsersDAO {
   }
 
   @Override
-  public void saveUser(User user) {
+  public boolean saveUser(User user) {
     String sql = "INSERT INTO \"user\" (username, password, score) VALUES (?, ?, ?);";
 
     try (Connection conn = dataSource.getConnection();
@@ -49,6 +49,7 @@ public class UsersDaoJdbc implements UsersDAO {
       pst.setString(2, user.password());
       pst.setInt(3, user.score());
       pst.executeUpdate();
+      return true;
     } catch(SQLException e) {
       throw new RuntimeException("SQL Error: could not save user.", e);
     }
@@ -64,13 +65,41 @@ public class UsersDaoJdbc implements UsersDAO {
       ResultSet rs = pst.executeQuery();
       return rs.next();
     } catch(SQLException e) {
-      throw new RuntimeException("SQL Error: failed user validation.", e);
+      throw new RuntimeException("SQL Error: failed username validation.", e);
     }
   }
 
   @Override
   public boolean passwordMatches(User user) {
-    throw new UnsupportedOperationException();
+    String sql = "SELECT * FROM \"user\" WHERE username = ? AND password = ?;";
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)
+    ) {
+      pst.setString(1, user.username());
+      pst.setString(2, user.password());
+      ResultSet rs = pst.executeQuery();
+      return rs.next();
+    } catch(SQLException e) {
+      throw new RuntimeException("SQL Error: failed password validation.", e);
+    }
+  }
+
+  @Override
+  public int getUserIdByUsername(String username) {
+    String sql = "SELECT id FROM \"user\" WHERE username = ?;";
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)
+    ) {
+      pst.setString(1, username);
+      ResultSet rs = pst.executeQuery();
+      if(rs.next()) {
+        return rs.getInt("id");
+      } else {
+        return -1;
+      }
+    } catch(SQLException e) {
+      throw new RuntimeException("SQL Error: could not get user.", e);
+    }
   }
 
   @Override

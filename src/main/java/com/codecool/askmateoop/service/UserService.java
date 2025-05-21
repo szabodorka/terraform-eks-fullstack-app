@@ -33,15 +33,27 @@ public class UserService {
     throw new UnsupportedOperationException();
   }
 
-  public void addNewUser(NewUserDTO newUserDTO) {
+  public boolean addNewUser(NewUserDTO newUserDTO) {
     try {
       User user = User.fromNewDTO(newUserDTO);
       if(usersDAO.exists(user)) {
-        return;
+        return false;
       }
-      usersDAO.saveUser(user);
+      return usersDAO.saveUser(user);
     } catch (RuntimeException e) {
       throw new RuntimeException("Service Error: could not save user.", e);
+    }
+  }
+
+  public int loginUser(NewUserDTO newUserDTO) {
+    try {
+      User user = User.fromNewDTO(newUserDTO);
+      if(!usersDAO.exists(user) || !usersDAO.passwordMatches(user)) {
+        return -1;
+      }
+      return usersDAO.getUserIdByUsername(user.username());
+    } catch(RuntimeException e) {
+      throw new RuntimeException("Service Error: could not log in user.", e);
     }
   }
 
