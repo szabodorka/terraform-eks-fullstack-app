@@ -4,6 +4,7 @@ import com.codecool.askmateoop.controller.dto.question.NewQuestionDTO;
 import com.codecool.askmateoop.controller.dto.question.QuestionDTO;
 import com.codecool.askmateoop.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,19 +26,18 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public QuestionDTO getQuestionById(@PathVariable int id) {
-//        TODO
-        throw new UnsupportedOperationException();
+        return questionService.getQuestionById(id);
     }
 
     @PostMapping("/")
-    public int addNewQuestion(@RequestBody NewQuestionDTO question) {
-//        TODO
-        throw new UnsupportedOperationException();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addNewQuestion(@RequestBody NewQuestionDTO question) {
+        questionService.addNewQuestion(question);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteQuestionById(@PathVariable int id) {
-//        TODO
-        throw new UnsupportedOperationException();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteQuestionById(@PathVariable int id) {
+        questionService.deleteQuestionById(id);
     }
 }
