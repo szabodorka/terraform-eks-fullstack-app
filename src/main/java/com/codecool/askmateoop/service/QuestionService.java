@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,22 +23,34 @@ public class QuestionService {
 
     public List<QuestionDTO> getAllQuestions() {
         List<Question> allQuestions = questionsDAO.getAllQuestions();
-        // TODO convert data to QuestionDTO
-        return List.of(new QuestionDTO(1, "Example Title", "Example Description", LocalDateTime.now()));
+        List<QuestionDTO> questionDTOs = new ArrayList<>();
+        for (Question question : allQuestions) {
+            questionDTOs.add(new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate()));
+        }
+        return questionDTOs;
     }
 
     public QuestionDTO getQuestionById(int id) {
-        // TODO
-        throw new UnsupportedOperationException();
+            Question question = questionsDAO.getQuestion(id);
+        return new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate());
     }
 
-    public boolean deleteQuestionById(int id) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public void deleteQuestionById(int id) {
+        Question question = questionsDAO.getQuestion(id);
+        questionsDAO.deleteQuestion(id);
     }
 
-    public int addNewQuestion(NewQuestionDTO question) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public NewQuestionDTO addNewQuestion(NewQuestionDTO question) {
+        int userId = 1;  // from session
+        LocalDateTime now = LocalDateTime.now();
+
+        Question questionToSave = new Question(0, question.title(), question.description(), userId, now);
+        Question savedQuestion = questionsDAO.createQuestion(questionToSave);
+
+        return new NewQuestionDTO(
+                savedQuestion.title(),
+                savedQuestion.description(),
+                savedQuestion.userId()
+        );
     }
 }
