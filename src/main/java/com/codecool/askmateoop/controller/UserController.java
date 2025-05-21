@@ -30,9 +30,8 @@ public class UserController {
   }
 
   @PostMapping("/")
-  public int addNewUser(@RequestBody NewUserDTO user) {
-//        TODO
-    throw new UnsupportedOperationException();
+  public void addNewUser(@RequestBody NewUserDTO user) {
+    userService.addNewUser(user);
   }
 
   @DeleteMapping("/{id}")

@@ -6,7 +6,6 @@ import com.codecool.askmateoop.dao.user.UsersDAO;
 import com.codecool.askmateoop.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class UserService {
@@ -32,8 +31,16 @@ public class UserService {
     throw new UnsupportedOperationException();
   }
 
-  public int addNewUser(NewUserDTO user) {
-    // TODO
-    throw new UnsupportedOperationException();
+  public void addNewUser(NewUserDTO newUserDTO) {
+    try {
+      User user = User.fromNewDTO(newUserDTO);
+      if(usersDAO.exists(user)) {
+        return;
+      }
+      usersDAO.saveUser(user);
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not save user.", e);
+    }
   }
+
 }
