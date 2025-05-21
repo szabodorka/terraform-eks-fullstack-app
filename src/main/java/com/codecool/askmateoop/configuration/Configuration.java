@@ -16,7 +16,7 @@ public class Configuration {
 
     @Bean
     public AnswersDAO answersDAO() {
-        return new AnswersDaoJdbc();
+        return new AnswersDaoJdbc(null);
     }
 
     @Bean
