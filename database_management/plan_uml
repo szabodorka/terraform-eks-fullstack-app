@@ -1,0 +1,25 @@
+@startuml
+
+class NewQuestionDTO{
+    - title
+    - description
+}
+
+
+class QuestionDTO{
+    - id
+    - title
+    - description
+    - postDate
+}
+
+class Question{
+    - id
+    - title
+    - description
+    - postDate
+}
+
+
+
+@enduml
