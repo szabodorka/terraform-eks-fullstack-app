@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import {useState} from "react";
 
 const Menu = () => {
-    const userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("askMate_UserId");
     const [searchTerm, setSearchTerm] = useState("");
 
     return (
@@ -10,6 +10,9 @@ const Menu = () => {
             <div className="menu">
                 <nav>
                     <div className="nav-buttons">
+                        <Link to={`/u/questions`}>
+                            {userId ? <button>Questions</button> : <button disabled>Questions</button>}
+                        </Link>
                         <input
                             type="text"
                             value={searchTerm}
@@ -28,6 +31,7 @@ const Menu = () => {
                     </div>
                 </nav>
             </div>
+            <Outlet />
         </>
     );
 };

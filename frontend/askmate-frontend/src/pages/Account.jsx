@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Error from "../components/Error/Error.jsx";
-import { useEffect } from 'react';
+import Loading from "../components/Loading/Loading.jsx";
 
 async function fetchUser(id){
     const response = await fetch(`/api/user/${id}`);
@@ -12,8 +12,7 @@ async function fetchUser(id){
             throw new Error("User not found!");
         }
     }
-    const user = await response.json();
-    return user;
+    return await response.json();
 }
 async function deleteUser(user){
     const response = await fetch(`/api/user/${user.id}`,{method: 'DELETE'});
@@ -49,6 +48,7 @@ async function handleDelete(navigate, user, setError){
 }
 
 function Account(){
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const [error, setError] = useState(null);
@@ -59,6 +59,7 @@ function Account(){
             try {
                 const user = await fetchUser(id);
                 setUser(user);
+                setLoading(false);
             } catch (e){
                 setError(e);
             }
@@ -67,7 +68,7 @@ function Account(){
         initUser(id);
     }, []);
 
-
+    if (loading) return <Loading />;
 
     return (
         <div>
@@ -76,20 +77,22 @@ function Account(){
                 Account
             </h1>
             <div>
-                <Table>
-                    <tr>
-                        <td>Name:</td>
-                        <td>{user.name}</td>
-                        <td>ID:</td>
-                        <td>{user.id}</td>
-                    </tr>
-                </Table>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name:</td>
+                            <td>{user.username}</td>
+                            <td>ID:</td>
+                            <td>{user.id}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div>
-                <button onClick={e=> handleDelete(navigate, user, setError)}>
+                <button onClick={()=> handleDelete(navigate, user, setError)}>
                     Delete Account
                 </button>
-                <button onClick={e=> handleLogOut(navigate)}>
+                <button onClick={()=> handleLogOut(navigate)}>
                     Log Out
                 </button>
             </div>
