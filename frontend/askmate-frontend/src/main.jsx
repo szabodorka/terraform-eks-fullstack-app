@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './main.css'
+import Login from "./pages/Login/Login.jsx";
+import Registration from "./pages/Register/Register.jsx";
 
 const router = createBrowserRouter([
     {

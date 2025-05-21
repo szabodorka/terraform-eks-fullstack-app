@@ -1,0 +1,5 @@
+.error {
+    background-color: rgb(238, 59, 59);
+    border: 3px solid red;
+    width: fit-content;
+}
