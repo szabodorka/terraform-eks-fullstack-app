@@ -6,7 +6,10 @@ import java.util.List;
 
 public interface UsersDAO {
   List<User> getAllUsers();
-  void saveUser(User user);
-  void deleteUserById(int id);
+  boolean saveUser(User user);
+  boolean exists(User user);
+  boolean passwordMatches(User user);
+  boolean deleteUserById(int id);
   User getUserById(int id);
+  int getUserIdByUsername(String username);
 }

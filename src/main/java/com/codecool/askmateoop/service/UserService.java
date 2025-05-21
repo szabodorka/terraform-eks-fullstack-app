@@ -7,7 +7,6 @@ import com.codecool.askmateoop.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -20,23 +19,58 @@ public class UserService {
   }
 
   public List<UserDTO> getAllUsers() {
-    List<User> allUsers = usersDAO.getAllUsers();
-    // TODO convert data to UserDTO
-    return List.of(new UserDTO(1, "Example Title", "Example Description", LocalDateTime.now(), 0));
+    try {
+      List<User> allUsers = usersDAO.getAllUsers();
+      if (allUsers.isEmpty()) {
+        return null;
+      }
+      return allUsers.stream().map(UserDTO::fromUser).toList();
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not get all users.", e);
+    }
   }
 
   public UserDTO getUserById(int id) {
-    // TODO
-    throw new UnsupportedOperationException();
+    try {
+      return UserDTO.fromUser(usersDAO.getUserById(id));
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not get user by id.", e);
+    }
   }
 
   public boolean deleteUserById(int id) {
-    // TODO
-    throw new UnsupportedOperationException();
+    try {
+      if (!usersDAO.exists(usersDAO.getUserById(id))) {
+        return false;
+      }
+      return usersDAO.deleteUserById(id);
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not delete user.", e);
+    }
   }
 
-  public int addNewUser(NewUserDTO user) {
-    // TODO
-    throw new UnsupportedOperationException();
+  public boolean addNewUser(NewUserDTO newUserDTO) {
+    try {
+      User user = User.fromNewDTO(newUserDTO);
+      if (usersDAO.exists(user)) {
+        return false;
+      }
+      return usersDAO.saveUser(user);
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not save user.", e);
+    }
   }
+
+  public int loginUser(NewUserDTO newUserDTO) {
+    try {
+      User user = User.fromNewDTO(newUserDTO);
+      if (!usersDAO.exists(user) || !usersDAO.passwordMatches(user)) {
+        return -1;
+      }
+      return usersDAO.getUserIdByUsername(user.username());
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not log in user.", e);
+    }
+  }
+
 }

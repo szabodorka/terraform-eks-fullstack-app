@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS question;
 DROP TABLE IF EXISTS answer;
+DROP TABLE IF EXISTS question;
 DROP TABLE IF EXISTS "user";
 
 
 CREATE TABLE "user"(
                        id SERIAL PRIMARY KEY,
-                       username text not null,
+                       username text not null unique,
                        registration_date  TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
                        password varchar(100) not null,
                        score int not null
