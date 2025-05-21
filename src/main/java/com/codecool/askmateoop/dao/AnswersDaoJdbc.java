@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnswersDaoJdbc implements AnswersDAO {
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     public AnswersDaoJdbc(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -79,7 +79,6 @@ public class AnswersDaoJdbc implements AnswersDAO {
             throw new RuntimeException("sql error: cannot create answers", e);
         }
     }
-
 
     @Override
     public void deleteAnswer(int id){
