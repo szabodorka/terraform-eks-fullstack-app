@@ -5,6 +5,7 @@ import './main.css'
 import Login from "./pages/Login/Login.jsx";
 import Registration from "./pages/Register/Register.jsx";
 import Questions from "./pages/Questions/Questions.jsx";
+import Menu from "./components/Menu/Menu.jsx";
 
 const router = createBrowserRouter([
     {
