@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import './main.css'
+import Questions from "./pages/Questions/Questions.jsx";
 
 const router = createBrowserRouter([
     {
