@@ -57,7 +57,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     @Override
     public void createQuestion(Question question) {
         try(Connection connection = dataSource.getConnection()) {
-            String sql = "INSERT INTO question (title, description, user_id, post_date) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO question (title, description, user_id) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, question.title());
             statement.setString(2, question.description());

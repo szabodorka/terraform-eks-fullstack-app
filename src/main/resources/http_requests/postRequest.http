@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/question/
+Content-Type: application/json
+
+{
+  "title": "second question",
+  "description": "This is the second question",
+  "userId": 2
+}
