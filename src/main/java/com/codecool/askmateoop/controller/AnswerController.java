@@ -5,6 +5,7 @@ import com.codecool.askmateoop.controller.dto.answer.AnswerDTO;
 import com.codecool.askmateoop.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 
@@ -20,24 +21,40 @@ public class AnswerController {
 
     @GetMapping("/all")
     public List<AnswerDTO> getAllAnswers() {
-        return answerService.getAllAnswers();
+        try{
+            return answerService.getAllAnswers();
+        } catch (RuntimeException e) {
+            //send back appropriate response code with empty body
+            return null;
+        }
     }
 
     @GetMapping("/{id}")
     public AnswerDTO getAnswerById(@PathVariable int id) {
-//        TODO
-        throw new UnsupportedOperationException();
+        try{
+            return answerService.getAnswerById(id);
+        } catch (RuntimeException e) {
+            //send back appropriate response code with empty body
+            return null;
+        }
     }
 
     @PostMapping("/")
-    public int addNewAnswer(@RequestBody NewAnswerDTO answer) {
-//        TODO
+    public void addNewAnswer(@RequestBody NewAnswerDTO newAnswerDTO) {
+        try{
+            answerService.addNewAnswer(newAnswerDTO);
+        } catch (RuntimeException e) {
+            //send back appropriate response code with empty body
+        }
         throw new UnsupportedOperationException();
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteAnswerById(@PathVariable int id) {
-//        TODO
-        throw new UnsupportedOperationException();
+    public void deleteAnswerById(@PathVariable int id) {
+        try{
+            answerService.deleteAnswerById(id);
+        } catch (RuntimeException e) {
+            //send back appropriate response code with empty body
+        }
     }
 }

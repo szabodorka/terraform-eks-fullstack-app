@@ -5,9 +5,11 @@ import com.codecool.askmateoop.controller.dto.user.UserDTO;
 import com.codecool.askmateoop.dao.user.UsersDAO;
 import com.codecool.askmateoop.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserService {
   private final UsersDAO usersDAO;
 

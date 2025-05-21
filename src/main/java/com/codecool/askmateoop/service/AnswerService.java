@@ -21,23 +21,39 @@ public class AnswerService {
     }
 
     public List<AnswerDTO> getAllAnswers() {
-        List<Answer> allAnswers = answersDAO.getAllAnswers();
-        // TODO convert data to AnswerDTO
-        throw new UnsupportedOperationException();
+        try {
+        List<Answer> answers = answersDAO.getAllAnswers();
+        return answers.stream()
+                .map(AnswerDTO::convertFromAnswer)
+                .toList();
+        } catch (RuntimeException e){
+            throw new RuntimeException("service error: cannot get all answers", e);
+        }
     }
 
     public AnswerDTO getAnswerById(int id) {
-        // TODO
-        throw new UnsupportedOperationException();
+        try {
+        Answer answer = answersDAO.getAnswer(id);
+        return AnswerDTO.convertFromAnswer(answer);
+        } catch (RuntimeException e){
+            throw new RuntimeException("service error: cannot get answer by id", e);
+        }
     }
 
-    public boolean deleteAnswerById(int id) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public void deleteAnswerById(int id) {
+        try{
+            answersDAO.deleteAnswer(id);
+        }catch (RuntimeException e){
+            throw new RuntimeException("service error: cannot delete answer by id", e);
+        }
     }
 
-    public int addNewAnswer(NewAnswerDTO answer) {
-        // TODO
-        throw new UnsupportedOperationException();
+    public void addNewAnswer(NewAnswerDTO newAnswerDTO) {
+        try {
+            Answer answer = Answer.fromNewAnswerDTO(newAnswerDTO);
+            answersDAO.createAnswer(answer);
+        }  catch (RuntimeException e){
+            throw new RuntimeException("service error: cannot add answer", e);
+        }
     }
 }
