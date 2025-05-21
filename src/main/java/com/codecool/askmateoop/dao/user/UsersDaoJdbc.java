@@ -2,9 +2,16 @@ package com.codecool.askmateoop.dao.user;
 
 import com.codecool.askmateoop.dao.model.User;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 public class UsersDaoJdbc implements UsersDAO {
+  private final DataSource dataSource;
+
+  public UsersDaoJdbc(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
+
   @Override
   public List<User> getAllUsers() {
     // TODO SQL query users from database
