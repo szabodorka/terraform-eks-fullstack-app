@@ -3,9 +3,15 @@ package com.codecool.askmateoop.dao;
 
 import com.codecool.askmateoop.dao.model.Answer;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 public class AnswersDaoJdbc implements AnswersDAO {
+    private final DataSource dataSource;
+
+    public AnswersDaoJdbc(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public List<Answer> getAllAnswers() {
