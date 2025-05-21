@@ -20,14 +20,26 @@ public class UserController {
   }
 
   @GetMapping("/all")
-  public List<UserDTO> getAllUsers() {
-    return userService.getAllUsers();
+  public ResponseEntity<List<UserDTO>> getAllUsers() {
+    try {
+      List<UserDTO> users = userService.getAllUsers();
+      return ResponseEntity.ok(users);
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
   }
 
   @GetMapping("/{id}")
-  public UserDTO getUserById(@PathVariable int id) {
-//        TODO
-    throw new UnsupportedOperationException();
+  public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
+    try {
+      UserDTO user = userService.getUserById(id);
+      if (user == null) {
+        return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok(user);
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
   }
 
   @GetMapping("/login")
@@ -35,11 +47,11 @@ public class UserController {
     NewUserDTO user = new NewUserDTO(username, password);
     try {
       int userId = userService.loginUser(user);
-      if(userId == -1) {
+      if (userId == -1) {
         return ResponseEntity.badRequest().build();
       }
       return ResponseEntity.ok(userId);
-    } catch(RuntimeException e) {
+    } catch (RuntimeException e) {
       return ResponseEntity.internalServerError().build();
     }
   }
@@ -48,12 +60,12 @@ public class UserController {
   public ResponseEntity<Void> addNewUser(@RequestBody NewUserDTO user) {
     try {
       boolean successful = userService.addNewUser(user);
-      if(successful) {
+      if (successful) {
         return ResponseEntity.ok().build();
       } else {
         return ResponseEntity.badRequest().build();
       }
-    } catch(RuntimeException e) {
+    } catch (RuntimeException e) {
       return ResponseEntity.internalServerError().build();
     }
   }

@@ -24,8 +24,11 @@ public class UserService {
   }
 
   public UserDTO getUserById(int id) {
-    // TODO
-    throw new UnsupportedOperationException();
+    try {
+      return UserDTO.fromUser(usersDAO.getUserById(id));
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not get user by id.", e);
+    }
   }
 
   public boolean deleteUserById(int id) {
@@ -36,7 +39,7 @@ public class UserService {
   public boolean addNewUser(NewUserDTO newUserDTO) {
     try {
       User user = User.fromNewDTO(newUserDTO);
-      if(usersDAO.exists(user)) {
+      if (usersDAO.exists(user)) {
         return false;
       }
       return usersDAO.saveUser(user);
@@ -48,11 +51,11 @@ public class UserService {
   public int loginUser(NewUserDTO newUserDTO) {
     try {
       User user = User.fromNewDTO(newUserDTO);
-      if(!usersDAO.exists(user) || !usersDAO.passwordMatches(user)) {
+      if (!usersDAO.exists(user) || !usersDAO.passwordMatches(user)) {
         return -1;
       }
       return usersDAO.getUserIdByUsername(user.username());
-    } catch(RuntimeException e) {
+    } catch (RuntimeException e) {
       throw new RuntimeException("Service Error: could not log in user.", e);
     }
   }

@@ -24,7 +24,7 @@ public class UsersDaoJdbc implements UsersDAO {
          Statement st = conn.createStatement();
          ResultSet rs = st.executeQuery(sql)
     ) {
-      while(rs.next()) {
+      while (rs.next()) {
         int id = rs.getInt("id");
         String username = rs.getString("username");
         String password = rs.getString("password");
@@ -32,7 +32,7 @@ public class UsersDaoJdbc implements UsersDAO {
         int score = rs.getInt("score");
         users.add(new User(id, username, password, registrationDate, score));
       }
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       throw new RuntimeException("SQL Error: could not get users.", e);
     }
     return users;
@@ -50,7 +50,7 @@ public class UsersDaoJdbc implements UsersDAO {
       pst.setInt(3, user.score());
       pst.executeUpdate();
       return true;
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       throw new RuntimeException("SQL Error: could not save user.", e);
     }
   }
@@ -64,7 +64,7 @@ public class UsersDaoJdbc implements UsersDAO {
       pst.setString(1, user.username());
       ResultSet rs = pst.executeQuery();
       return rs.next();
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       throw new RuntimeException("SQL Error: failed username validation.", e);
     }
   }
@@ -79,7 +79,7 @@ public class UsersDaoJdbc implements UsersDAO {
       pst.setString(2, user.password());
       ResultSet rs = pst.executeQuery();
       return rs.next();
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       throw new RuntimeException("SQL Error: failed password validation.", e);
     }
   }
@@ -92,12 +92,12 @@ public class UsersDaoJdbc implements UsersDAO {
     ) {
       pst.setString(1, username);
       ResultSet rs = pst.executeQuery();
-      if(rs.next()) {
+      if (rs.next()) {
         return rs.getInt("id");
       } else {
         return -1;
       }
-    } catch(SQLException e) {
+    } catch (SQLException e) {
       throw new RuntimeException("SQL Error: could not get user.", e);
     }
   }
@@ -109,6 +109,25 @@ public class UsersDaoJdbc implements UsersDAO {
 
   @Override
   public User getUserById(int id) {
-    throw new UnsupportedOperationException();
+    User user = null;
+    String sql = "SELECT * FROM \"user\" WHERE id = ?;";
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)
+    ) {
+      pst.setInt(1, id);
+      ResultSet rs = pst.executeQuery();
+      if (rs.next()) {
+        user = new User(
+                rs.getInt("id"),
+                rs.getString("username"),
+                rs.getString("password"),
+                rs.getTimestamp("registration_date").toLocalDateTime(),
+                rs.getInt("score")
+        );
+      }
+      return user;
+    } catch (SQLException e) {
+      throw new RuntimeException("SQL Error: could not get user.", e);
+    }
   }
 }
