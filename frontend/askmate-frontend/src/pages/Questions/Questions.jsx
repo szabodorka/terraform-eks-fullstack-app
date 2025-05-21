@@ -3,7 +3,7 @@ import Loading from "../../components/Loading/Loading.jsx";
 import Question from "./Question.jsx";
 
 const fetchQuestions = async () => {
-    const response = await fetch("/api/questions");
+    const response = await fetch("/api/question/all");
     if (!response.ok) {
         throw new Error(`Failed to fetch questions. ${response.statusText}`);
     }
