@@ -9,7 +9,7 @@ public interface UsersDAO {
   boolean saveUser(User user);
   boolean exists(User user);
   boolean passwordMatches(User user);
-  void deleteUserById(int id);
+  boolean deleteUserById(int id);
   User getUserById(int id);
   int getUserIdByUsername(String username);
 }

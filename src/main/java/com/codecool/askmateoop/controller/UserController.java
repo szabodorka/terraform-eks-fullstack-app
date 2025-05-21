@@ -23,6 +23,9 @@ public class UserController {
   public ResponseEntity<List<UserDTO>> getAllUsers() {
     try {
       List<UserDTO> users = userService.getAllUsers();
+      if (users == null) {
+        return ResponseEntity.notFound().build();
+      }
       return ResponseEntity.ok(users);
     } catch (RuntimeException e) {
       return ResponseEntity.internalServerError().build();
@@ -71,8 +74,16 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
-  public boolean deleteUserById(@PathVariable int id) {
-//        TODO
-    throw new UnsupportedOperationException();
+  public ResponseEntity<Void> deleteUserById(@PathVariable int id) {
+    try {
+      boolean successful = userService.deleteUserById(id);
+      if (successful) {
+        return ResponseEntity.noContent().build();
+      } else {
+        return ResponseEntity.notFound().build();
+      }
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
   }
 }

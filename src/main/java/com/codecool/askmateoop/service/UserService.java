@@ -19,8 +19,15 @@ public class UserService {
   }
 
   public List<UserDTO> getAllUsers() {
-    List<User> allUsers = usersDAO.getAllUsers();
-    return allUsers.stream().map(UserDTO::fromUser).toList();
+    try {
+      List<User> allUsers = usersDAO.getAllUsers();
+      if (allUsers.isEmpty()) {
+        return null;
+      }
+      return allUsers.stream().map(UserDTO::fromUser).toList();
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not get all users.", e);
+    }
   }
 
   public UserDTO getUserById(int id) {
@@ -32,8 +39,14 @@ public class UserService {
   }
 
   public boolean deleteUserById(int id) {
-    // TODO
-    throw new UnsupportedOperationException();
+    try {
+      if (!usersDAO.exists(usersDAO.getUserById(id))) {
+        return false;
+      }
+      return usersDAO.deleteUserById(id);
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not delete user.", e);
+    }
   }
 
   public boolean addNewUser(NewUserDTO newUserDTO) {

@@ -32,10 +32,10 @@ public class UsersDaoJdbc implements UsersDAO {
         int score = rs.getInt("score");
         users.add(new User(id, username, password, registrationDate, score));
       }
+      return users;
     } catch (SQLException e) {
-      throw new RuntimeException("SQL Error: could not get users.", e);
+      throw new RuntimeException("SQL Error: could not get all users.", e);
     }
-    return users;
   }
 
   @Override
@@ -103,8 +103,17 @@ public class UsersDaoJdbc implements UsersDAO {
   }
 
   @Override
-  public void deleteUserById(int id) {
-    throw new UnsupportedOperationException();
+  public boolean deleteUserById(int id) {
+    String sql = "DELETE FROM \"user\" WHERE id = ?;";
+    try (Connection conn = dataSource.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)
+    ) {
+      pst.setInt(1, id);
+      pst.executeUpdate();
+      return true;
+    } catch (SQLException e) {
+      throw new RuntimeException("SQL Error: could not delete user.", e);
+    }
   }
 
   @Override
