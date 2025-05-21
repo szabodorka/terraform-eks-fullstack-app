@@ -55,18 +55,14 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     }
 
     @Override
-    public Question createQuestion(Question question) {
+    public void createQuestion(Question question) {
         try(Connection connection = dataSource.getConnection()) {
             String sql = "INSERT INTO question (title, description, user_id, post_date) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, question.title());
             statement.setString(2, question.description());
             statement.setInt(3, question.userId());
-            statement.setTimestamp(4, Timestamp.valueOf(question.postDate()));
             statement.executeUpdate();
-            ResultSet result = statement.getGeneratedKeys();
-            result.next();
-            return question;
         } catch (SQLException e) {
             throw new RuntimeException("Error while adding new question", e);
         }

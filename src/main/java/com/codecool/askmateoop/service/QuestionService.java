@@ -22,35 +22,41 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> getAllQuestions() {
-        List<Question> allQuestions = questionsDAO.getAllQuestions();
-        List<QuestionDTO> questionDTOs = new ArrayList<>();
-        for (Question question : allQuestions) {
-            questionDTOs.add(new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate()));
+        try {
+            List<Question> allQuestions = questionsDAO.getAllQuestions();
+            List<QuestionDTO> questionDTOs = new ArrayList<>();
+            for (Question question : allQuestions) {
+                questionDTOs.add(new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate()));
+            }
+            return questionDTOs;
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error while getting all questions", e);
         }
-        return questionDTOs;
     }
 
     public QuestionDTO getQuestionById(int id) {
-            Question question = questionsDAO.getQuestion(id);
-        return new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate());
+            try {
+                Question question = questionsDAO.getQuestion(id);
+                return new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate());
+            } catch (RuntimeException e) {
+                throw new RuntimeException("Error while getting question by id", e);
+            }
     }
 
     public void deleteQuestionById(int id) {
-        Question question = questionsDAO.getQuestion(id);
-        questionsDAO.deleteQuestion(id);
+        try {
+            questionsDAO.deleteQuestion(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error while deleting question", e);
+        }
     }
 
-    public NewQuestionDTO addNewQuestion(NewQuestionDTO question) {
-        int userId = 1;  // from session
-        LocalDateTime now = LocalDateTime.now();
-
-        Question questionToSave = new Question(0, question.title(), question.description(), userId, now);
-        Question savedQuestion = questionsDAO.createQuestion(questionToSave);
-
-        return new NewQuestionDTO(
-                savedQuestion.title(),
-                savedQuestion.description(),
-                savedQuestion.userId()
-        );
+    public void addNewQuestion(NewQuestionDTO question) {
+        try {
+            Question questionToSave = new Question(-1, question.title(), question.description(), question.userId(), null);
+            questionsDAO.createQuestion(questionToSave);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error while adding new question", e);
+        }
     }
 }
