@@ -4,6 +4,8 @@ import com.codecool.askmateoop.controller.dto.answer.NewAnswerDTO;
 import com.codecool.askmateoop.controller.dto.answer.AnswerDTO;
 import com.codecool.askmateoop.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -18,43 +20,43 @@ public class AnswerController {
     public AnswerController(AnswerService answerService) {
         this.answerService = answerService;
     }
-
     @GetMapping("/all")
-    public List<AnswerDTO> getAllAnswers() {
-        try{
-            return answerService.getAllAnswers();
+    public ResponseEntity<List<AnswerDTO>> getAllAnswers() {
+        try {
+            List<AnswerDTO> answerDTOs = answerService.getAllAnswers();
+            return ResponseEntity.ok(answerDTOs);
         } catch (RuntimeException e) {
-            //send back appropriate response code with empty body
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("/{id}")
-    public AnswerDTO getAnswerById(@PathVariable int id) {
-        try{
-            return answerService.getAnswerById(id);
+    public ResponseEntity<AnswerDTO> getAnswerById(@PathVariable int id) {
+        try {
+            AnswerDTO answerDTO = answerService.getAnswerById(id);
+            return ResponseEntity.ok(answerDTO);
         } catch (RuntimeException e) {
-            //send back appropriate response code with empty body
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // or INTERNAL_SERVER_ERROR if more appropriate
         }
     }
 
     @PostMapping("/")
-    public void addNewAnswer(@RequestBody NewAnswerDTO newAnswerDTO) {
-        try{
+    public ResponseEntity<Void> addNewAnswer(@RequestBody NewAnswerDTO newAnswerDTO) {
+        try {
             answerService.addNewAnswer(newAnswerDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (RuntimeException e) {
-            //send back appropriate response code with empty body
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        throw new UnsupportedOperationException();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAnswerById(@PathVariable int id) {
-        try{
+    public ResponseEntity<Void> deleteAnswerById(@PathVariable int id) {
+        try {
             answerService.deleteAnswerById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (RuntimeException e) {
-            //send back appropriate response code with empty body
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
