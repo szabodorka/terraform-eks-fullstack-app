@@ -79,4 +79,31 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             throw new RuntimeException("Error while deleting question", e);
         }
     }
+
+    @Override
+    public List<Question> getSearchedQuestions(String searchTerm) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "SELECT id, title, description, user_id, post_date FROM question WHERE title LIKE ? OR description LIKE ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + searchTerm + "%");
+            preparedStatement.setString(2, "%" + searchTerm + "%");
+
+            ResultSet result = preparedStatement.executeQuery();
+
+            List<Question> allQuestions = new ArrayList<>();
+            while (result.next()) {
+                Question question = new Question(
+                        result.getInt("id"),
+                        result.getString("title"),
+                        result.getString("description"),
+                        result.getInt("user_id"),
+                        result.getTimestamp("post_date").toLocalDateTime()
+                );
+                allQuestions.add(question);
+            }
+            return allQuestions;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading searched questions", e);
+        }
+    }
 }
