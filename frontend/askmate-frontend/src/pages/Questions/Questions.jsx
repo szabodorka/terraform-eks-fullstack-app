@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
 import Loading from "../../components/Loading/Loading.jsx";
 import Question from "./Question.jsx";
+import {useLocation} from "react-router-dom";
 import Error from "../../components/Error/Error.jsx";
 
 
 
-const deleteQuestion = async (id) => {
-    const response = await fetch(`/api/question/${id}`, { method: "DELETE" });
-    if (!response.ok) {
-        throw new Error(`Failed to delete question. ${response.statusText}`);
-    }
-};
+
 
 const Questions = () => {
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
     const [error, setError] = useState(null);
+    const location = useLocation();
+    const { pathname } = location;
 
-    const fetchQuestions = async () => {
+    const fetchAllQuestions = async () => {
         const response = await fetch("/api/question/all");
         if (!response.ok) {
             if (response.status === 404) {
@@ -29,6 +27,29 @@ const Questions = () => {
         return response.json();
     };
 
+    const fetchSearchedQuestions = async (searchTerm) => {
+        const response = await fetch(`/api/question/search?searchTerm=${searchTerm}`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                setError("Question Not Found");
+            } else if (response.status === 500) {
+                setError("Internal Server Error")
+            }
+        }
+        return response.json();
+    }
+
+    const deleteQuestion = async (id) => {
+        const response = await fetch(`/api/question/${id}`, { method: "DELETE" });
+        if (!response.ok) {
+            if (response.status === 404) {
+                setError("Question Not Found");
+            } else if (response.status === 500) {
+                setError("Internal Server Error")
+            }
+        }
+    };
+
     const handleDelete = (id) => {
         deleteQuestion(id).then(() => {
             setQuestions((prev) => prev.filter((question) => question.id !== id));
@@ -36,12 +57,21 @@ const Questions = () => {
     };
 
     useEffect(() => {
-        fetchQuestions()
-            .then((questions) => {
-                setLoading(false);
-                setQuestions(questions);
-            })
-    }, []);
+        if(pathname.includes("search")){
+            const searchTerm = pathname.split("/").pop();
+            fetchSearchedQuestions(searchTerm)
+                .then((questions) => {
+                    setLoading(false);
+                    setQuestions(questions);
+                })
+        } else{
+            fetchAllQuestions()
+                .then((questions) => {
+                    setLoading(false);
+                    setQuestions(questions);
+                })
+        }
+    }, [pathname]);
 
     if (loading) return <Loading />;
 

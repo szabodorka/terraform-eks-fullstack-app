@@ -29,6 +29,11 @@ public class QuestionController {
         return questionService.getQuestionById(id);
     }
 
+    @GetMapping("/search")
+    public List<QuestionDTO> searchQuestions(@RequestParam String searchTerm) {
+        return questionService.searchQuestionsBySearchTerm(searchTerm);
+    }
+
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public void addNewQuestion(@RequestBody NewQuestionDTO question) {

@@ -19,7 +19,7 @@ public class AnswersDaoJdbc implements AnswersDAO {
     @Override
     public List<Answer> getAllAnswers() {
         try(Connection connection = dataSource.getConnection()){
-            String sql ="SELECT (id, title, message, user_id, post_date, question_id) FROM answer";
+            String sql ="SELECT id, title, message, user_id, post_date, question_id FROM answer";
             PreparedStatement st = connection.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             List<Answer> answers = new ArrayList<>();
@@ -42,19 +42,18 @@ public class AnswersDaoJdbc implements AnswersDAO {
     @Override
     public Answer getAnswer(int id) {
         try(Connection connection = dataSource.getConnection()){
-            String sql ="SELECT (id, title, message, user_id, post_date, question_id) FROM answer WHERE id = ?";
+            String sql ="SELECT id, title, message, user_id, post_date, question_id FROM answer WHERE id = ?";
             PreparedStatement st = connection.prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             if (rs.next()){
-                return new Answer(
-                        rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getInt(4),
-                        rs.getTimestamp(5).toLocalDateTime(),
-                        rs.getInt(6)
-                );
+                String title = rs.getString(2);
+                String message = rs.getString(3);
+                int userId = rs.getInt(4);
+                LocalDateTime postDate = rs.getTimestamp(5).toLocalDateTime();
+                int questionId = rs.getInt(6);
+                Answer answer = new Answer(id, title, message, userId, postDate, questionId);
+                return answer;
             } else {
                 return null;
             }
@@ -72,7 +71,7 @@ public class AnswersDaoJdbc implements AnswersDAO {
             st.setString(1, answer.title());
             st.setString(2, answer.message());
             st.setInt(3, answer.userId());
-            st.setInt(3, answer.questionId());
+            st.setInt(4, answer.questionId());
             st.executeUpdate();
 
         } catch (SQLException e) {
