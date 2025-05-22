@@ -11,7 +11,7 @@ const fetchQuestions = async () => {
 };
 
 const deleteQuestion = async (id) => {
-    const response = await fetch(`/api/questions/${id}`, { method: "DELETE" });
+    const response = await fetch(`/api/question/${id}`, { method: "DELETE" });
     if (!response.ok) {
         throw new Error(`Failed to delete question. ${response.statusText}`);
     }
