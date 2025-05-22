@@ -6,6 +6,7 @@ import com.codecool.askmateoop.dao.AnswersDAO;
 import com.codecool.askmateoop.dao.model.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +38,17 @@ public class AnswerService {
         return AnswerDTO.convertFromAnswer(answer);
         } catch (RuntimeException e){
             throw new RuntimeException("service error: cannot get answer by id", e);
+        }
+    }
+
+    public List<AnswerDTO> getAnswersByQuestionId(@PathVariable int questionId) {
+        try {
+            List<Answer> answers = answersDAO.getAllAnswersByQuestionId(questionId);
+            return answers.stream()
+                    .map(AnswerDTO::convertFromAnswer)
+                    .toList();
+        } catch (RuntimeException e){
+            throw new RuntimeException("service error: cannot get all answers by question id", e);
         }
     }
 

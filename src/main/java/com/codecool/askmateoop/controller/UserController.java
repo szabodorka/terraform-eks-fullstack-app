@@ -45,6 +45,19 @@ public class UserController {
     }
   }
 
+  @GetMapping("/name/{id}")
+  public ResponseEntity<String> getUserNameById(@PathVariable int id) {
+    try {
+      UserDTO user = userService.getUserById(id);
+      if (user == null) {
+        return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok(user.username());
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
+  }
+
   @GetMapping("/login")
   public ResponseEntity<Integer> login(@RequestParam String username, @RequestParam String password) {
     NewUserDTO user = new NewUserDTO(username, password);
@@ -54,6 +67,19 @@ public class UserController {
         return ResponseEntity.badRequest().build();
       }
       return ResponseEntity.ok(userId);
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
+  }
+
+  @GetMapping("/score")
+  public ResponseEntity<Integer> increaseScore(@RequestParam int userId, @RequestParam int scoreDiff) {
+    try {
+        int newScore = userService.increaseUserScoreById(userId, scoreDiff);
+        if (newScore == -1) {
+          return ResponseEntity.badRequest().build();
+        }
+      return ResponseEntity.ok(newScore);
     } catch (RuntimeException e) {
       return ResponseEntity.internalServerError().build();
     }

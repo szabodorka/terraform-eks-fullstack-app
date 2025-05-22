@@ -1,0 +1,27 @@
+### Get all answers
+GET http://localhost:8080/api/answer/all
+Accept: application/json
+
+###
+
+### Get answer by ID
+GET http://localhost:8080/api/answer/1
+Accept: application/json
+
+###
+
+### Add new answer
+POST http://localhost:8080/api/answer/
+Content-Type: application/json
+
+{
+  "title": "http test title",
+  "message": "This is a new answer.",
+  "userId": 1,
+  "questionId": 1
+}
+
+###
+
+### Delete answer by ID
+DELETE http://localhost:8080/api/answer/1

@@ -38,6 +38,14 @@ public class UserService {
     }
   }
 
+  public int increaseUserScoreById(int id, int scoreDiff) {
+    try {
+      return usersDAO.increaseUserScoreById(id, scoreDiff);
+    } catch (RuntimeException e) {
+      throw new RuntimeException("Service Error: could not increase user score.", e);
+    }
+  }
+
   public boolean deleteUserById(int id) {
     try {
       if (!usersDAO.exists(usersDAO.getUserById(id))) {
