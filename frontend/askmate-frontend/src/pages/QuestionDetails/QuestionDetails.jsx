@@ -38,10 +38,12 @@ function QuestionDetails() {
             }
         }
         if(parseInt(userId) === question.userId){
+            setLoading(true);
             return;
         }
         await fetch(`/api/user/score?userId=${userId}&scoreDiff=${10}`);
         await fetch(`/api/user/score?userId=${question.userId}&scoreDiff=${1}`);
+        setLoading(true);
     }
 
     useEffect(() => {
@@ -75,7 +77,7 @@ function QuestionDetails() {
                 setLoading(false);
             });
         });
-    }, []);
+    }, [loading]);
 
     if(loading) return <Loading />;
 
