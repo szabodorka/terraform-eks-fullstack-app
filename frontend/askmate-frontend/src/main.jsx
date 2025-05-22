@@ -6,7 +6,7 @@ import Login from "./pages/Login/Login.jsx";
 import Registration from "./pages/Register/Register.jsx";
 import Questions from "./pages/Questions/Questions.jsx";
 import Menu from "./components/Menu/Menu.jsx";
-import Account from "./pages/Account.jsx";
+import Account from "./pages/Account/Account.jsx";
 
 const router = createBrowserRouter([
     {
@@ -29,14 +29,14 @@ const router = createBrowserRouter([
                 path: "/u/search/:searchTerm",
                 element: <Questions />,
             },
-            {
+            /*{
                 path: "/u/create",
                 element: <QuestionCreator />,
             },
             {
                 path: "/u/:id",
                 element: <QuestionDetails />,
-            },
+            },*/
             {
                 path: "/u/account",
                 element: <Account />,
