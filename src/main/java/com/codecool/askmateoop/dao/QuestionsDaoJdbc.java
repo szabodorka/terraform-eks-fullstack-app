@@ -83,7 +83,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     @Override
     public List<Question> getSearchedQuestions(String searchTerm) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT id, title, description, user_id, post_date FROM question WHERE title LIKE ? OR description LIKE ?";
+            String sql = "SELECT id, title, description, user_id, post_date FROM question WHERE title ILIKE ? OR description ILIKE ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, "%" + searchTerm + "%");
             preparedStatement.setString(2, "%" + searchTerm + "%");

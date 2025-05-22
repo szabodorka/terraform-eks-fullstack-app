@@ -84,6 +84,7 @@ const Questions = () => {
                             id={question.id}
                             title={question.title}
                             description={question.description}
+                            postDate={question.postDate}
                         />
                         {isOwner && <button onClick={() => handleDelete(question.id)}>Delete</button>}
                     </div>)

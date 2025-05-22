@@ -1,5 +1,6 @@
 import {Link, Outlet} from "react-router-dom";
 import {useState} from "react";
+import "./Menu.css"
 
 const Menu = () => {
     const userId = localStorage.getItem("askMate_UserId");
@@ -8,12 +9,14 @@ const Menu = () => {
     return (
         <>
             <div className="menu">
-                <nav>
+                <nav className="nav">
+                    <Link to={`/u/questions`}><div className="site-title">I Have a Question</div></Link>
                     <div className="nav-buttons">
                         <Link to={`/u/questions`}>
                             {userId ? <button>Questions</button> : <button disabled>Questions</button>}
                         </Link>
                         <input
+                            className="search-input"
                             type="text"
                             value={searchTerm}
                             placeholder="Search questions..."
