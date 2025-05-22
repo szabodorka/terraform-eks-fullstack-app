@@ -1,0 +1,56 @@
+.answersContainer {
+    background-color: #1e1e1e;
+    color: #f3f3f3;
+    padding: 2rem;
+    max-height: 80vh;
+}
+
+.answerCard {
+    background-color: #2a2a2a;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.answerCard:hover {
+    background-color: #353535;
+}
+
+.answerCard h2 {
+    color: #9096f4;
+    margin: 0 0 8px 0;
+}
+
+.answerCard p {
+    margin: 0;
+    color: #ccc;
+}
+
+.answerCard button {
+    margin-top: 15px;
+    background-color: #ff5f56;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.answerCard button:hover {
+    background-color: #ea5550;
+}
+
+.answerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.postDate {
+    font-size: 10px;
+    color: #888;
+}
