@@ -40,6 +40,16 @@ public class AnswerController {
         }
     }
 
+    @GetMapping("/question/{questionId}")
+    public ResponseEntity<List<AnswerDTO>> getAnswersForQuestion(@PathVariable int questionId) {
+        try {
+            List<AnswerDTO> answerDTOs = answerService.getAnswersByQuestionId(questionId);
+            return ResponseEntity.ok(answerDTOs);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping("/")
     public ResponseEntity<Void> addNewAnswer(@RequestBody NewAnswerDTO newAnswerDTO) {
         try {

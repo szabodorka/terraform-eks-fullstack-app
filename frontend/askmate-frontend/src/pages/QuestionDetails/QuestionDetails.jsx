@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Loading from "../../components/Loading/Loading.jsx";
 import Error from "../../components/Error/Error.jsx";
+import Answers from "../Answers/Answers.jsx";
 
 function QuestionDetails() {
     const location = useLocation();
@@ -101,6 +102,7 @@ function QuestionDetails() {
                 </label>
                 {title && description ? <button onClick={() => handlePostAnswer(title, description)}>Post</button> : <button disabled>Post</button>}
             </label>
+            <Answers questionId={question.id} />
         </div>
     );
 }
