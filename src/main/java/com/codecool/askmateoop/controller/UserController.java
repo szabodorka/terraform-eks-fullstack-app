@@ -45,6 +45,19 @@ public class UserController {
     }
   }
 
+  @GetMapping("/name/{id}")
+  public ResponseEntity<String> getUserNameById(@PathVariable int id) {
+    try {
+      UserDTO user = userService.getUserById(id);
+      if (user == null) {
+        return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok(user.username());
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
+  }
+
   @GetMapping("/login")
   public ResponseEntity<Integer> login(@RequestParam String username, @RequestParam String password) {
     NewUserDTO user = new NewUserDTO(username, password);
