@@ -21,7 +21,7 @@ export default function Login() {
             return;
         }
         const userId = await res.json();
-        localStorage.setItem("askMate_UserId", userId.id);
+        localStorage.setItem("askMate_UserId", userId);
         localStorage.setItem("askMate_Username", username);
         localStorage.setItem("askMate_Password", password);
         navigate(`/u/questions`);
