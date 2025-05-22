@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Loading from "../../components/Loading/Loading.jsx";
 import Question from "./Question.jsx";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Error from "../../components/Error/Error.jsx";
 import "./Questions.css";
 
@@ -11,6 +11,7 @@ const Questions = () => {
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const fetchAllQuestions = async () => {
         const response = await fetch("/api/question/all");
@@ -53,6 +54,10 @@ const Questions = () => {
         });
     };
 
+    const handleClick = (id) => {
+        navigate(`/u/${id}`);
+    };
+
     useEffect(() => {
         if(pathname.includes("search")){
             const searchTerm = pathname.split("/").pop();
@@ -79,9 +84,8 @@ const Questions = () => {
                 {questions.map((question) => {
                     const isOwner = question.userId.toString() === localStorage.getItem("askMate_UserId");
                     return(
-                    <div key={question.id} className="questionCard">
+                    <div key={question.id} className="questionCard" onClick={() => handleClick(question.id)}>
                         <Question
-                            id={question.id}
                             title={question.title}
                             description={question.description}
                             postDate={question.postDate}
