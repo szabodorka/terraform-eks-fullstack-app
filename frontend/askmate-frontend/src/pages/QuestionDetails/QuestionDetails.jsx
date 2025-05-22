@@ -92,6 +92,7 @@ function QuestionDetails() {
             })}</p>
             <p>Created by: {username}</p>
             <p>{question.description}</p>
+            <div className="post-answer">
             <label>
                 Post your answer:
                 <label>
@@ -104,6 +105,7 @@ function QuestionDetails() {
                 </label>
                 {title && description ? <button onClick={() => handlePostAnswer(title, description)}>Post</button> : <button disabled>Post</button>}
             </label>
+            </div>
             <Answers questionId={question.id} />
         </div>
     );

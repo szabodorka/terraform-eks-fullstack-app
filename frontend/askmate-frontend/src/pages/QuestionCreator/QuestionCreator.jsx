@@ -53,7 +53,7 @@ function QuestionCreator() {
                         <input type="text" onChange={(e) => setDescription(e.target.value)} />
                     </label>
                     <button type="submit">Post Question</button>
-                    <button type="button" onClick={() => navigate("/")}>
+                    <button type="button" onClick={() => navigate("/u/questions")}>
                         Back
                     </button>
                 </form>
