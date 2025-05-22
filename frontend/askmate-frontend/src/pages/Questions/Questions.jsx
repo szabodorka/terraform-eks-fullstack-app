@@ -76,16 +76,18 @@ const Questions = () => {
         <>
             {error && <Error errorMessage={error} />}
             <div className="questionsContainer">
-                {questions.map((question) => (
+                {questions.map((question) => {
+                    const isOwner = question.userId.toString() === localStorage.getItem("askMate_UserId");
+                    return(
                     <div key={question.id} className="questionCard">
                         <Question
                             id={question.id}
                             title={question.title}
                             description={question.description}
                         />
-                        <button onClick={() => handleDelete(question.id)}>Delete</button>
-                    </div>
-                ))}
+                        {isOwner && <button onClick={() => handleDelete(question.id)}>Delete</button>}
+                    </div>)
+                })}
             </div>
         </>
     );
