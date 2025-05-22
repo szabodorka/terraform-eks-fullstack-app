@@ -10,6 +10,7 @@ function QuestionCreator() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        const userId = localStorage.getItem("askMate_UserId");
         if (title === "" || description === "") {
             setError("Must fill out all information!");
             return;
@@ -17,7 +18,7 @@ function QuestionCreator() {
         const question = {
             title: title,
             description: description,
-            userId: localStorage.getItem("askMate_UserId")
+            userId: userId
         };
         const res = await fetch("/api/question/", {
             method: "POST",
@@ -34,6 +35,7 @@ function QuestionCreator() {
             }
             return;
         }
+        await fetch(`/api/user/score?userId=${userId}&scoreDiff=${5}`);
         navigate("/u/questions");
     }
 

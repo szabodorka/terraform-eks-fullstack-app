@@ -103,6 +103,25 @@ public class UsersDaoJdbc implements UsersDAO {
   }
 
   @Override
+  public int increaseUserScoreById(int id, int scoreDiff) {
+    try(Connection conn = dataSource.getConnection()){
+      User user = getUserById(id);
+      if (user == null) {
+        return -1;
+      }
+      int newScore = user.score() + scoreDiff;
+      String sql = "UPDATE \"user\" SET score = ? WHERE id = ?;";
+      PreparedStatement pst = conn.prepareStatement(sql);
+      pst.setInt(1, newScore);
+      pst.setInt(2, id);
+      pst.executeUpdate();
+      return newScore;
+    } catch(SQLException e){
+      throw new RuntimeException("SQL Error: could not increase user score.", e);
+    }
+  }
+
+  @Override
   public boolean deleteUserById(int id) {
     String sql = "DELETE FROM \"user\" WHERE id = ?;";
     try (Connection conn = dataSource.getConnection();
