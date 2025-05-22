@@ -12,4 +12,5 @@ public interface UsersDAO {
   boolean deleteUserById(int id);
   User getUserById(int id);
   int getUserIdByUsername(String username);
+  int increaseUserScoreById(int id, int scoreDiff);
 }

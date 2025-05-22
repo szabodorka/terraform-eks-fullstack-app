@@ -11,6 +11,37 @@ function QuestionDetails() {
     const [question, setQuestion] = useState(null);
     const [error, setError] = useState(null);
     const [username, setUsername] = useState(null);
+    const [title, setAnswerTitle] = useState(null);
+    const [description, setAnswerDesc] = useState(null);
+
+    async function handlePostAnswer(title, description){
+        const userId = localStorage.getItem("askMate_UserId");
+        const answer = {
+            title: title,
+            message: description,
+            userId: userId,
+            questionId: question.id
+        };
+        const res = await fetch("/api/answer/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(answer),
+        });
+        if(!res.ok){
+            if(res.status === 500){
+                setError("Something went wrong with the server!");
+            }else{
+                setError("Couldn't post answer!");
+            }
+        }
+        if(parseInt(userId) === question.userId){
+            return;
+        }
+        await fetch(`/api/user/score?userId=${userId}&scoreDiff=${10}`);
+        await fetch(`/api/user/score?userId=${question.userId}&scoreDiff=${1}`);
+    }
 
     useEffect(() => {
         async function fetchQuestion(id) {
@@ -58,6 +89,18 @@ function QuestionDetails() {
             })}</p>
             <p>Created by: {username}</p>
             <p>{question.description}</p>
+            <label>
+                Post your answer:
+                <label>
+                    Title:
+                    <input type="text" onChange={(e) => setAnswerTitle(e.target.value)} />
+                </label>
+                <label>
+                    Description:
+                    <input type="text" onChange={(e) => setAnswerDesc(e.target.value)} />
+                </label>
+                {title && description ? <button onClick={() => handlePostAnswer(title, description)}>Post</button> : <button disabled>Post</button>}
+            </label>
         </div>
     );
 }
