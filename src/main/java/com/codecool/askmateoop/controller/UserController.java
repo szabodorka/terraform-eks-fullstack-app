@@ -72,6 +72,19 @@ public class UserController {
     }
   }
 
+  @GetMapping("/score")
+  public ResponseEntity<Integer> increaseScore(@RequestParam int userId, @RequestParam int scoreDiff) {
+    try {
+        int newScore = userService.increaseUserScoreById(userId, scoreDiff);
+        if (newScore == -1) {
+          return ResponseEntity.badRequest().build();
+        }
+      return ResponseEntity.ok(newScore);
+    } catch (RuntimeException e) {
+      return ResponseEntity.internalServerError().build();
+    }
+  }
+
   @PostMapping("/")
   public ResponseEntity<Void> addNewUser(@RequestBody NewUserDTO user) {
     try {
