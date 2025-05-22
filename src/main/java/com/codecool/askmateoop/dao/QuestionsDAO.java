@@ -9,4 +9,5 @@ public interface QuestionsDAO {
     Question getQuestion(int id);
     void createQuestion(Question question);
     void deleteQuestion(int id);
+    List<Question> getSearchedQuestions(String searchTerm);
 }

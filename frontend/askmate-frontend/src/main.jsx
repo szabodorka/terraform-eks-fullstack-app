@@ -33,11 +33,11 @@ const router = createBrowserRouter([
             {
                 path: "/u/create",
                 element: <QuestionCreator />,
-            },
+            },/*
             {
                 path: "/u/:id",
                 element: <QuestionDetails />,
-            },
+            },*/
             {
                 path: "/u/account",
                 element: <Account />,

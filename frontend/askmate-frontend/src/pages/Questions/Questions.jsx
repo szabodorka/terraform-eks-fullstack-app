@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import Loading from "../../components/Loading/Loading.jsx";
 import Question from "./Question.jsx";
+import {useLocation} from "react-router-dom";
 
-const fetchQuestions = async () => {
+const fetchAllQuestions = async () => {
     const response = await fetch("/api/question/all");
     if (!response.ok) {
         throw new Error(`Failed to fetch questions. ${response.statusText}`);
     }
     return response.json();
 };
+
+const fetchSearchedQuestions = async (searchTerm) => {
+    const response = await fetch(`/api/question/search?searchTerm=${searchTerm}`);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch questions. ${response.statusText}`);
+    }
+    return response.json();
+}
 
 const deleteQuestion = async (id) => {
     const response = await fetch(`/api/question/${id}`, { method: "DELETE" });
@@ -18,6 +27,8 @@ const deleteQuestion = async (id) => {
 };
 
 const Questions = () => {
+    const location = useLocation();
+    const { pathname } = location;
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
 
@@ -28,12 +39,21 @@ const Questions = () => {
     };
 
     useEffect(() => {
-        fetchQuestions()
-            .then((questions) => {
-                setLoading(false);
-                setQuestions(questions);
-            })
-    }, []);
+        if(pathname.includes("search")){
+            const searchTerm = pathname.split("/").pop();
+            fetchSearchedQuestions(searchTerm)
+                .then((questions) => {
+                    setLoading(false);
+                    setQuestions(questions);
+                })
+        } else{
+            fetchAllQuestions()
+                .then((questions) => {
+                    setLoading(false);
+                    setQuestions(questions);
+                })
+        }
+    }, [pathname]);
 
     if (loading) return <Loading />;
 

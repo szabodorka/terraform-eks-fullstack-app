@@ -7,7 +7,6 @@ import com.codecool.askmateoop.dao.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +56,19 @@ public class QuestionService {
             questionsDAO.createQuestion(questionToSave);
         } catch (RuntimeException e) {
             throw new RuntimeException("Error while adding new question", e);
+        }
+    }
+
+    public List<QuestionDTO> searchQuestionsBySearchTerm(String searchTerm) {
+        try {
+            List<Question> searchedQuestions = questionsDAO.getSearchedQuestions(searchTerm);
+            List<QuestionDTO> questionDTOs = new ArrayList<>();
+            for (Question question : searchedQuestions) {
+                questionDTOs.add(new QuestionDTO(question.id(), question.title(), question.description(), question.userId(), question.postDate()));
+            }
+            return questionDTOs;
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error while searching for questions", e);
         }
     }
 }
