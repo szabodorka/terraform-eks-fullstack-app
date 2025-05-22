@@ -7,6 +7,7 @@ import Registration from "./pages/Register/Register.jsx";
 import Questions from "./pages/Questions/Questions.jsx";
 import Menu from "./components/Menu/Menu.jsx";
 import Account from "./pages/Account.jsx";
+import QuestionCreator from "./pages/QuestionCreator/QuestionCreator.jsx";
 
 const router = createBrowserRouter([
     {
