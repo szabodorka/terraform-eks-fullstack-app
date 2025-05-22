@@ -35,6 +35,7 @@
 }
 
 .user-table td {
+    color: #2c3e50;
     padding: 1rem;
     background-color: white;
     border-bottom: 1px solid #ecf0f1;
