@@ -1,7 +1,8 @@
+import "./Account.css";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import Error from "../components/Error/Error.jsx";
-import Loading from "../components/Loading/Loading.jsx";
+import Error from "../../components/Error/Error.jsx";
+import Loading from "../../components/Loading/Loading.jsx";
 
 async function fetchUser(id){
     const response = await fetch(`/api/user/${id}`);
@@ -71,28 +72,40 @@ function Account(){
     if (loading) return <Loading />;
 
     return (
-        <div>
+        <div className="account-container">
             {error && <Error errorMessage={error} />}
-            <h1>
+            <h1 className="account-heading">
                 Account
             </h1>
             <div>
-                <table>
+                <table className="user-table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>ID</th>
+                            <th>Registration date</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr>
-                            <td>Name:</td>
                             <td>{user.username}</td>
-                            <td>ID:</td>
                             <td>{user.id}</td>
+                            <td>{new Date(user.registrationDate).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })}</td>
+                            <td>{user.score}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div>
-                <button onClick={()=> handleDelete(navigate, user, setError)}>
+            <div className="button-group">
+                <button className="delete-btn" onClick={()=> handleDelete(navigate, user, setError)}>
                     Delete Account
                 </button>
-                <button onClick={()=> handleLogOut(navigate)}>
+                <button className="logout-btn" onClick={()=> handleLogOut(navigate)}>
                     Log Out
                 </button>
             </div>
