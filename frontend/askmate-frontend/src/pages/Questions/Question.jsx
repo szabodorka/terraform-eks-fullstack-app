@@ -11,4 +11,5 @@ const Question = ({id, title, description}) => {
         <p>{description}</p>
     </>
 }
+
 export default Question;

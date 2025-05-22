@@ -3,17 +3,14 @@ import Loading from "../../components/Loading/Loading.jsx";
 import Question from "./Question.jsx";
 import {useLocation} from "react-router-dom";
 import Error from "../../components/Error/Error.jsx";
-
-
-
-
+import "./Questions.css";
 
 const Questions = () => {
+    const location = useLocation();
+    const { pathname } = location;
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
     const [error, setError] = useState(null);
-    const location = useLocation();
-    const { pathname } = location;
 
     const fetchAllQuestions = async () => {
         const response = await fetch("/api/question/all");
@@ -78,16 +75,18 @@ const Questions = () => {
     return (
         <>
             {error && <Error errorMessage={error} />}
-            {questions.map((question) => (
-                <div key={question.id}>
-                    <Question
-                        id={question.id}
-                        title={question.title}
-                        description={question.description}
-                    />
-                    <button onClick={() => handleDelete(question.id)}>Delete</button>
-                </div>
-            ))}
+            <div className="questionsContainer">
+                {questions.map((question) => (
+                    <div key={question.id} className="questionCard">
+                        <Question
+                            id={question.id}
+                            title={question.title}
+                            description={question.description}
+                        />
+                        <button onClick={() => handleDelete(question.id)}>Delete</button>
+                    </div>
+                ))}
+            </div>
         </>
     );
 };
