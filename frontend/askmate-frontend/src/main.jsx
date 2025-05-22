@@ -8,6 +8,7 @@ import Questions from "./pages/Questions/Questions.jsx";
 import Menu from "./components/Menu/Menu.jsx";
 import Account from "./pages/Account.jsx";
 import QuestionCreator from "./pages/QuestionCreator/QuestionCreator.jsx";
+import QuestionDetails from "./pages/QuestionDetails/QuestionDetails.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,11 +34,11 @@ const router = createBrowserRouter([
             {
                 path: "/u/create",
                 element: <QuestionCreator />,
-            },/*
+            },
             {
                 path: "/u/:id",
                 element: <QuestionDetails />,
-            },*/
+            },
             {
                 path: "/u/account",
                 element: <Account />,
