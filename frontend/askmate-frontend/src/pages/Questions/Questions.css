@@ -20,7 +20,7 @@
 }
 
 .questionCard h2 {
-    color: #646cff;
+    color: #9096f4;
     margin: 0 0 0.5rem 0;
 }
 
@@ -41,4 +41,16 @@
 
 .questionCard button:hover {
     background-color: #e64942;
+}
+
+.questionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.questionPostDate {
+    font-size: 15px;
+    color: #888;
 }
