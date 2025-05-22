@@ -28,7 +28,7 @@ CREATE TABLE answer(
                        message text not null,
                        user_id integer not null REFERENCES "user"(id),
                        post_date  TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
-                       question_id integer REFERENCES question(id)
+                       question_id integer REFERENCES question(id) ON DELETE CASCADE
 );
 
 
