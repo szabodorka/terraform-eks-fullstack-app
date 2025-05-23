@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Error from "../../components/Error/Error";
+import "./Register.css";
 
 export default function Registration() {
     const [username, setUsername] = useState("");
@@ -37,24 +38,24 @@ export default function Registration() {
     }
 
     return (
-        <>
+        <div className="registration-page">
             {error && <Error errorMessage={error} />}
             <div className="registration">
                 <form onSubmit={handleSubmit}>
                     <label>
-                        Please enter your username:
+                        Enter your username:
                         <input type="text" onChange={(e) => setUsername(e.target.value)} />
                     </label>
                     <label>
-                        Please enter your password:
+                        Enter your password:
                         <input type="password" onChange={(e) => setPassword(e.target.value)} />
                     </label>
-                    <button type="submit">Create Account</button>
-                    <button type="button" onClick={() => navigate("/")}>
+                    <button id="create-btn" type="submit">Create Account</button>
+                    <button id="back-btn" type="button" onClick={() => navigate("/")}>
                         Back
                     </button>
                 </form>
             </div>
-        </>
+        </div>
     );
 }
