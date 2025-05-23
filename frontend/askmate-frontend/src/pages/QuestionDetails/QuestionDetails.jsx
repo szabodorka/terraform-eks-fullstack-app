@@ -59,6 +59,7 @@ function QuestionDetails() {
             return await response.json();
         }
         async function fetchUsername(userId) {
+            if(userId === 0) return "[deleted user]";
             const response = await fetch(`/api/user/name/${userId}`);
             if(!response.ok) {
                 if(response.status === 500){
