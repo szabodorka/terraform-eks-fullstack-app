@@ -14,7 +14,7 @@ CREATE TABLE question(
                          id SERIAL PRIMARY KEY,
                          title text not null,
                          description text not null,
-                         user_id integer not null REFERENCES "user"(id),
+                         user_id integer REFERENCES "user"(id) ON DELETE SET NULL,
                          post_date TIMESTAMP WITHOUT TIME ZONE DEFAULT now()
 );
 
