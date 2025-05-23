@@ -48,7 +48,8 @@ const Questions = () => {
         }
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = (event, id) => {
+        event.stopPropagation();
         deleteQuestion(id).then(() => {
             setQuestions((prev) => prev.filter((question) => question.id !== id));
         });
@@ -90,7 +91,7 @@ const Questions = () => {
                             description={question.description}
                             postDate={question.postDate}
                         />
-                        {isOwner && <button onClick={() => handleDelete(question.id)}>Delete</button>}
+                        {isOwner && <button onClick={(event) => handleDelete(event, question.id)}>Delete</button>}
                     </div>)
                 })}
             </div>
