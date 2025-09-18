@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import Loading from "../../components/Loading/Loading.jsx";
 import Error from "../../components/Error/Error.jsx";
 import Answer from "./Answer.jsx";
+import "./Answers.css"
 
 const Answers = ({questionId}) => {
     const [answers, setAnswers] = useState([]);

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Error from "../../components/Error/Error";
+import "./QuestionCreator.css"
 
 function QuestionCreator() {
     const [title, setTitle] = useState("");
@@ -44,16 +45,20 @@ function QuestionCreator() {
             {error && <Error errorMessage={error} />}
             <div className="questionCreator">
                 <form onSubmit={handleSubmit}>
-                    <label>
-                        Title:
-                        <input type="text" onChange={(e) => setTitle(e.target.value)} />
-                    </label>
-                    <label>
-                        Description:
-                        <input type="text" onChange={(e) => setDescription(e.target.value)} />
-                    </label>
-                    <button type="submit">Post Question</button>
-                    <button type="button" onClick={() => navigate("/")}>
+                    <div className="questionForm">
+                        <label>
+                            Title:
+                            <input type="text" onChange={(e) => setTitle(e.target.value)} />
+                        </label>
+                    </div>
+                    <div className="questionForm">
+                        <label>
+                            Description:
+                            <input type="text" onChange={(e) => setDescription(e.target.value)} />
+                        </label>
+                    </div>
+                    <button className="buttons" type="submit">Post Question</button>
+                    <button className="buttons" type="button" onClick={() => navigate("/u/questions")}>
                         Back
                     </button>
                 </form>

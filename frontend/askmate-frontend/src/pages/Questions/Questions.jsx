@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Loading from "../../components/Loading/Loading.jsx";
 import Question from "./Question.jsx";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Error from "../../components/Error/Error.jsx";
 import "./Questions.css";
 
@@ -11,6 +11,7 @@ const Questions = () => {
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState(null);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const fetchAllQuestions = async () => {
         const response = await fetch("/api/question/all");
@@ -47,10 +48,15 @@ const Questions = () => {
         }
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = (event, id) => {
+        event.stopPropagation();
         deleteQuestion(id).then(() => {
             setQuestions((prev) => prev.filter((question) => question.id !== id));
         });
+    };
+
+    const handleClick = (id) => {
+        navigate(`/u/${id}`);
     };
 
     useEffect(() => {
@@ -79,13 +85,13 @@ const Questions = () => {
                 {questions.map((question) => {
                     const isOwner = question.userId.toString() === localStorage.getItem("askMate_UserId");
                     return(
-                    <div key={question.id} className="questionCard">
+                    <div key={question.id} className="questionCard" onClick={() => handleClick(question.id)}>
                         <Question
-                            id={question.id}
                             title={question.title}
                             description={question.description}
+                            postDate={question.postDate}
                         />
-                        {isOwner && <button onClick={() => handleDelete(question.id)}>Delete</button>}
+                        {isOwner && <button onClick={(event) => handleDelete(event, question.id)}>Delete</button>}
                     </div>)
                 })}
             </div>
