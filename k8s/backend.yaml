@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ihaq-config
+data:
+  IHAQ_DATABASE_URL: jdbc:postgresql://<rds-endpoint>/ihaq
+  IHAQ_DATABASE_NAME: ihaq
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ihaq-secret
+type: Opaque
+data:
+  IHAQ_DATABASE_USERNAME: ZGJ1c2Vy
+  IHAQ_DATABASE_PASSWORD: c3VwZXJzZWNyZXQ=
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ihaq-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ihaq-backend
+  template:
+    metadata:
+      labels:
+        app: ihaq-backend
+    spec:
+      containers:
+        - name: ihaq-backend
+          image: 536284936715.dkr.ecr.eu-central-1.amazonaws.com/ihaq:backend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet: { path: /actuator/health, port: 8080 }
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: { path: /actuator/health, port: 8080 }
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          env:
+            - name: ASKMATE_DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ihaq-config
+                  key: IHAQ_DATABASE_URL
+            - name: ASKMATE_DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ihaq-secret
+                  key: IHAQ_DATABASE_USERNAME
+            - name: ASKMATE_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ihaq-secret
+                  key: IHAQ_DATABASE_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health
+    alb.ingress.kubernetes.io/healthcheck-port: "8080"
+spec:
+  selector:
+    app: ihaq-backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: NodePort

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ihaq-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb # Informs the cluster that this Ingress should be handled by the AWS Load Balancer Controller
+    alb.ingress.kubernetes.io/scheme: internet-facing # public ALB, available over the internet. Choose internal for private apps.
+    alb.ingress.kubernetes.io/target-type: instance # Targeting EC2 worker node IP and reaching pods over NodePort. Use ip in case of ClusterIP Service type, as it will target the pods directly.
+spec:
+  ingressClassName: alb
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ihaq-frontend
+                port:
+                  number: 80
