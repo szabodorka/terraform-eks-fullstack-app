@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ihaq-frontend
+spec:
+  selector:
+    matchLabels:
+      app: ihaq-frontend
+  template:
+    metadata:
+      labels:
+        app: ihaq-frontend
+    spec:
+      containers:
+        - name: ihaq-frontend
+          image: 536284936715.dkr.ecr.eu-central-1.amazonaws.com/ihaq:frontend
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ihaq-frontend
+  # annotations:
+  #   alb.ingress.kubernetes.io/scheme: internet-facing # If the Service is LoadBalancer type
+  #   alb.ingress.kubernetes.io/target-type: instance # If the Service is LoadBalancer type
+spec:
+  selector:
+    app: ihaq-frontend
+  ports:
+    - port: 80
+      targetPort: 80
+  type: NodePort
