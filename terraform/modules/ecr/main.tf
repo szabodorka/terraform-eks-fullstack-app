@@ -18,7 +18,6 @@ resource "terraform_data" "push_images" {
     ]
 
   provisioner "local-exec" {
-    interpreter = ["PowerShell", "-Command"]
     command = <<-EOT
       # Login to ECR
       docker logout
