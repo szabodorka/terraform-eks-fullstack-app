@@ -22,8 +22,6 @@ The application is deployed on **AWS** using:
 
 Infrastructure provisioning is automated with **Terraform**, and workloads are deployed using **Kubernetes manifests**.
 
-**_ Insert visualization of the infrastructure - network diagram _**
-
 ## Tech Stack
 
 - **Backend**: Java, Spring Boot
