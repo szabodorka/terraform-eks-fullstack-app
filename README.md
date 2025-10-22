@@ -1,38 +1,87 @@
-# Terraform EKS Fullstack App
+<a id="readme-top"></a>
 
-IHaQ - I Have a Question is a **StackOverflow-like web application** where users can:
+<div align="center">
+  <img src="./frontend/images/logo.PNG" alt="Project Logo" width="275" height="200">
+  <br>
+  <br>
+  <h1>Terraform EKS Fullstack App – IHaQ (I Have a Question)</h1>
+  <p align="center">
+    A StackOverflow-like fullstack web application deployed on AWS EKS with Terraform infrastructure automation.
+    <br />
+    <a href="#about-the-project"><strong>Explore the documentation »</strong></a>
+    <br />
+    <br />
+    <a href="#architecture-overview">View Architecture</a>
+    ·
+    <a href="#getting-started">Setup Guide</a>
+    ·
+    <a href="https://github.com/szabodorka/terraform-eks-fullstack-app/issues">Report Issue</a>
+  </p>
+</div>
+
+---
+
+## Table of Contents
+
+1. [About the Project](#about-the-project)
+2. [Architecture Overview](#architecture-overview)
+3. [Tech Stack](#tech-stack)
+4. [Getting Started](#getting-started)
+5. [Future Plans](#future-plans)
+
+## About the Project
+
+**IHaQ – “I Have a Question”** is a **StackOverflow-like** platform where users can:
 
 - Post questions
-- Answer other users' questions
+- Answer other users’ questions
 - Earn points for contributions
 
-The project is built with:
+This application was originally developed as a team project, the backend and frontend source code (including all commits) come from that earlier collaborative repository.
 
-- **Java + Spring Boot** backend
-- **React + Nginx** frontend
-- **PostgreSQL** database
+In this current project, **my focus was entirely on the DevOps and cloud infrastructure side**:
+
+- **Dockerized** the existing Java Spring Boot backend and React frontend
+- Created a **Docker Compose** setup for local development
+- Designed and implemented a **Terraform-based AWS infrastructure** including
+  - VPC, Subnets, NAT Gateway
+  - EKS Cluster and Node Groups
+  - RDS PostgreSQL instance
+  - IAM roles and OIDC setup
+  - AWS Load Balancer Controller
+  - ECR repository with automated build & push of frontend and backend images
+- Deployed workloads via **Kubernetes manifests** on EKS
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Architecture Overview
 
-The application is deployed on **AWS** using:
+The project runs on **AWS Cloud**:
 
-- **EKS (Elastic Kubernetes Service)** for container orchestration
-- **RDS (Relational Database Service)** for PostgreSQL
-- **ALB (Application Load Balancer)** managed by the AWS Load Balancer Controller
+- **EKS (Elastic Kubernetes Service)** handles container orchestration
+- **RDS (Relational Database Service)** hosts the PostgreSQL database
+- **ALB (Application Load Balancer)** routes frontend and backend traffic
+- **ECR (Elastic Container Registry)** stores built Docker images
 
-Infrastructure provisioning is automated with **Terraform**, and workloads are deployed using **Kubernetes manifests**.
+Infrastructure is **fully provisioned with Terraform**, and the app is deployed through **Kubernetes manifests** for backend, frontend, database migration, and ingress routing.
+
+<!-- _(Network diagram could be inserted here.)_ -->
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Tech Stack
 
-- **Backend**: Java, Spring Boot
-- **Frontend**: React, Nginx
-- **Database**: PostgreSQL (AWS RDS)
-- **Infrastructure**: Terraform, AWS (EKS, RDS, ALB, IAM, VPC)
-- **Kubernetes**: Deployments, Services, ConfigMaps, Secrets, Ingress
+| Layer                                | Technologies                                                                                                                                                                                                                                                                                |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Frontend**                         | [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)[![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org)                                             |
+| **Backend**                          | [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot) [![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.java.com)  |
+| **Database**                         | [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org) [![AWS RDS](https://img.shields.io/badge/AWS%20RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white)](https://aws.amazon.com/rds/) |
+| **Infrastructure**                   | ![Terraform](https://img.shields.io/badge/Terraform-844FBA?style=for-the-badge&logo=terraform&logoColor=white) [![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com)                                                 |
+| **Containerization & Orchestration** | [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com) [![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io)                  |
 
 ## Getting Started
 
-### 1. Clone the repository
+### 1. Fork the project and clone the repository
 
 ```bash
 git clone https://github.com/<your-github-username>/<your-repo-name>.git
@@ -99,16 +148,7 @@ kubectl delete -f k8s
 kubectl get ingress # must be empty
 ```
 
-**Identical with the following commands:
-kubectl delete -f ingress.yaml
-kubectl delete -f frontend-deployment.yaml
-kubectl delete -f backend-deployment.yaml
-kubectl delete -f db-init-job.yaml
-kubectl delete configmap ihaq-config
-kubectl delete secret ihaq-secret
-kubectl delete configmap ihaq-migrations**
-
-Monitor on EC2 Console if Load Balancer, Target Group and Network Interface is removed
+Monitor on AWS EC2 Console if Load Balancer, Target Group and Network Interface is removed
 
 - Destroy Terraform resources:
 
@@ -116,14 +156,7 @@ Monitor on EC2 Console if Load Balancer, Target Group and Network Interface is r
 terraform destroy
 ```
 
-## Configuration
-
-- Database connection is configured via:
-  - ConfigMap (for URL, driver class)
-  - Secret (for username/password)
-- Backend health checks: /actuator/health
-- Frontend served via Nginx at /
-- API exposed under /api
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Future plans
 
