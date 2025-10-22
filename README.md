@@ -2,9 +2,6 @@
 
 <div align="center">
   <img src="./frontend/images/logo.PNG" alt="Project Logo" width="275" height="200">
-  <br>
-  <br>
-  <h1>Terraform EKS Fullstack App – IHaQ (I Have a Question)</h1>
   <p align="center">
     A StackOverflow-like fullstack web application deployed on AWS EKS with Terraform infrastructure automation.
     <br />
