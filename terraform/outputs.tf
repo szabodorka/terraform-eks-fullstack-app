@@ -7,5 +7,9 @@ output "rds_endpoint" {
 }
 
 output "kubeconfig_command" {
-    value = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region eu-central-1"
+    value = "aws eks update-kubeconfig --name ${module.eks.cluster_name} --region ${var.region}"
+}
+
+output "ecr_url" {
+    value = module.ecr.ecr_url
 }
