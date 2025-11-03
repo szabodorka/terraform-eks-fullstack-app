@@ -21,3 +21,24 @@ variable "cluster_name" {
 variable "openid_connect_provider" {
     type = string
 }
+
+variable "region" {
+  type = string
+}
+
+variable "ecr_url" {
+  type = string
+}
+
+variable "rds_endpoint" {
+  type = string
+}
+
+variable "db_name" {
+  type = string
+  default = "ihaq"
+}
+
+variable "db_init_script_path" {
+  type = string
+}

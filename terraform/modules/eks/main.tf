@@ -69,7 +69,7 @@ resource "terraform_data" "configure_kubectl" {
   depends_on = [aws_eks_cluster.this]
 
   provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --region eu-central-1 --name ${aws_eks_cluster.this.name} --profile default"
+    command = "aws eks update-kubeconfig --region ${var.region} --name ${aws_eks_cluster.this.name} --profile default"
   }
 }
 

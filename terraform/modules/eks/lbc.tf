@@ -67,7 +67,7 @@ resource "helm_release" "lb_controller" {
     },
     {
       name = "region"
-      value = "eu-central-1"
+      value = "${var.region}"
     }
   ]
 
