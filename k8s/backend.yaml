@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: ihaq-backend
-          image: 536284936715.dkr.ecr.eu-central-1.amazonaws.com/ihaq:backend
+          image: <repository_url>:backend
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
