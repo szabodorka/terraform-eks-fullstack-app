@@ -18,10 +18,11 @@ resource "terraform_data" "push_images" {
     ]
 
   provisioner "local-exec" {
+    interpreter = ["PowerShell", "-Command"]
     command = <<-EOT
       # Login to ECR
       docker logout
-      docker login --username AWS --password $(aws ecr get-login-password --region eu-central-1 --profile default) ${aws_ecr_repository.ihaq.repository_url}
+      docker login --username AWS --password-stdin $(aws ecr get-login-password --region ${var.region} --profile default) ${aws_ecr_repository.ihaq.repository_url}
 
       # Build and push backend image
       cd .././backend
