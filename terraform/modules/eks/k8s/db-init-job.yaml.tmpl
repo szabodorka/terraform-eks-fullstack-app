@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: postgres:16
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ihaq-secret
+                  key: IHAQ_DATABASE_PASSWORD
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: ihaq-secret
+                  key: IHAQ_DATABASE_USERNAME
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ihaq-config
+                  key: IHAQ_DATABASE_NAME
+            - name: DB_HOST
+              value: "${db_host}"
+            - name: DB_PORT
+              value: "5432"
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "Running migrations...";
+              psql -h "$DB_HOST" -U "$DB_USER" -d "$DB_NAME" -f /migrations/startup.sql
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+      volumes:
+        - name: migrations
+          configMap:
+            name: ihaq-migrations
