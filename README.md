@@ -107,7 +107,7 @@ This will:
 
 ### 3. Deploy Application to Kubernetes
 
-Insert RDS Endpoint from output into backend.yaml and db-init-job-yaml files.
+**Insert RDS Endpoint and ECR repository URL from Terraform output into backend.yaml, db-init-job-yaml and frontend-deployment.yaml files.**
 
 Apply the Kubernetes manifests:
 
