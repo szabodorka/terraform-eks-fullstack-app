@@ -22,6 +22,7 @@ module "rds" {
 
 module "ecr" {
   source = "./modules/ecr"
+  region = var.region
 }
 
 
